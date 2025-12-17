@@ -1,0 +1,23 @@
+name: Generate Video
+on: 
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+
+      - name: Run FFmpeg
+        run: |
+          ffmpeg -f lavfi -i testsrc=duration=300:size=1280x720:rate=30 output.mp4
+
+      - name: Upload Video
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-video
+          path: output.mp4
